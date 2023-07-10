@@ -1,478 +1,214 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ECHO+ </title>
-    <!-- Include the Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
-    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js"></script> <!-- Replace with your own Font Awesome kit URL -->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-
-   
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ECHO+ - Welcome</title>
+    <link rel="icon" href="echo.png" type="image/png">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #000;
+            background-image: url('bg.png');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
         }
 
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: #000;
-            color: #ff0066;
-            padding: 20px;
+        .container {
+            max-width: 90%;
+            margin: 150px auto;
+            padding: 40px;
             text-align: center;
-            z-index: 999;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.6s ease-in-out;
         }
-
+        
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            animation: scaleIn 0.6s ease-in-out;
+        }
+        
         h1 {
-            margin: 0;
-            color: #ff0066;
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #333;
+            animation: slideInLeft 0.6s ease-in-out;
         }
-
-        #chat-container {
-            width: 100%;
-            height: 100vh;
-            background-color: #000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            box-sizing: border-box;
+        
+        p {
+            font-size: 16px;
+            margin-bottom: 30px;
+            color: #555;
+            animation: slideInRight 0.6s ease-in-out;
         }
-
-        #message-container {
-            width: 100%;
-            max-width: 1300px;
-            margin: 20px 0;
-            padding: 20px;
-            background-color: #111;
-            border-radius: 8px;
-            overflow-y: auto;
-        }
-
-        .message {
-            padding: 20px;
-            border-bottom: 1px solid #333;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        
+        .continue-button {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #ff03ab;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
             transition: background-color 0.3s;
-            background-color: #222;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .message p {
-            margin: 0;
-            font-size: 16px;
-            line-height: 1.5;
-            color: #fff;
-        }
-
-        .message .sender {
-            font-weight: bold;
-            color: #ff0066;
-        }
-
-        .message .timestamp {
-            font-size: 12px;
-            color: #999;
-        }
-
-        .message .options {
-            display: flex;
-            align-items: center;
-        }
-
-        .options button {
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            color: #999;
-            font-size: 14px;
-            margin-right: 10px;
-            transition: color 0.3s;
-        }
-
-        .options button:hover {
-            color: #ff0066;
-        }
-
-        #message-input-container {
-            position: fixed;
-            bottom: 0;
-            width: calc(100% - 40px);
-            background-color: #111;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-        }
-
-        #message-input {
-            flex-grow: 1;
-            height: 40px;
-            border: none;
-            border-radius: 20px;
-            padding: 0 15px;
-            font-size: 16px;
-            background-color: #222;
-            color: #fff;
-        }
-
-        #send-button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 20px;
-            background-color: #ff0066;
-            color: #fff;
-            font-size: 16px;
-            margin-left: 10px;
-            cursor: pointer;
-        }
-
-        .logo {
-            width: 50px;
-            height: 50px;
-            vertical-align: middle;
-            margin-right: 10px;
+            animation: slideInUp 0.6s ease-in-out;
         }
         
-        /* Updated CSS for enhanced message display */
-        .message:hover {
-            background-color: #333;
-            cursor: pointer;
+        .continue-button:hover {
+            background-color: #ff0979;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
         
-        .message p {
-            margin: 0;
-            padding: 5px;
-        }
-        
-        .message .sender {
-            font-weight: bold;
-            color: #ff0066;
-        }
-        
-        .message .timestamp {
-            font-size: 12px;
-            color: #999;
-        }
-        
-        /* Additional styles for options */
-        .options {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 10px;
-        }
-        
-        .options button:first-child {
-            margin-right: auto;
-        }
-        
-        .options button i {
-            margin-right: 5px;
-        }
-        
-        /* Neon Pink color scheme */
-        #message-input::placeholder {
-            color: #ff0066;
-        }
-        
-        #send-button:hover {
-            background-color: #ff33cc;
-        }
-        
-        .options button:hover {
-            color: #ff33cc;
-        }
-        
-        .header {
-            background-color: #000;
-            color: #ff33cc;
-        }
-        
-        h1 {
-            color: #ff33cc;
-        }
-        
-        .message .options button {
-            color: #fff;
-        }
-        
-        .message .options button:hover {
-            color: #ff33cc;
-        }
-        
-        /* Color Themes */
-        body.black-cyan-pink {
-            background-color: #000;
-        }
-        
-        body.black-cyan-pink .header,
-        body.black-cyan-pink h1,
-        body.black-cyan-pink .message .sender,
-        body.black-cyan-pink .header,
-        body.black-cyan-pink #send-button,
-        body.black-cyan-pink .options button,
-        body.black-cyan-pink .options button:hover {
-            color: #00ffff;
-        }
-
-        body.black-cyan-pink #message-container,
-        body.black-cyan-pink .message,
-        body.black-cyan-pink #message-input-container,
-        body.black-cyan-pink #message-input,
-        body.black-cyan-pink .options button:first-child,
-        body.black-cyan-pink .message .options button i {
-            background-color: #000;
-        }
-        
-        body.black-cyan-pink #message-container .message p,
-        body.black-cyan-pink #message-input::placeholder {
-            color: #fff;
-        }
-        
-        body.blue-red {
-            background-color: #000080;
-        }
-        
-        body.blue-red .header,
-        body.blue-red h1,
-        body.blue-red .message .sender,
-        body.blue-red .header,
-        body.blue-red #send-button,
-        body.blue-red .options button,
-        body.blue-red .options button:hover {
-            color: #ff0000;
-        }
-        
-        body.blue-red #message-container,
-        body.blue-red .message,
-        body.blue-red #message-input-container,
-        body.blue-red #message-input,
-        body.blue-red .options button:first-child,
-        body.blue-red .message .options button i {
-            background-color: #0000ff;
-        }
-        
-        body.blue-red #message-container .message p,
-        body.blue-red #message-input::placeholder {
-            color: #fff;
-        }
-
-        .intro-section {
+        .modal-container {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to bottom, rgb(0, 229, 255), rgb(255, 0, 81));
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
             z-index: 9999;
-            opacity: 1;
-            transition: opacity 0.5s ease-in-out;
-          }
-          
-          .logo1 {
-            max-width: 200px;
-            max-height: 200px;
-          }
-          
-          .intro-section.hide {
-            opacity: 0;
-            pointer-events: none;
-          }
-          #image-upload-label {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            margin-right: 10px;
+        }
+        
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            margin: 150px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .modal-text {
+            font-size: 14px;
+            margin-bottom: 30px;
+            color: #555;
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 6px 12px;
+            font-size: 12px;
+            background-color: #ff03ab;
             color: #fff;
+            text-decoration: none;
+            border-radius: 20px;
+            transition: background-color 0.3s;
         }
         
-        #image-upload-label i {
-            margin-right: 5px;
+        .close-button:hover {
+            background-color: #ff0979;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .emoji {
+            font-size: 16px;
+            margin: 0 5px;
         }
         
-        #image-input {
-            display: none;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
-        button img {
-            width: 20px; /* Adjust the width to your desired size */
-            height: 20px; /* Adjust the height to your desired size */
-            margin-right: 5px; /* Add margin to separate the image from the text */
-          }
-          
+        
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
-<div class="intro-section">
-    <img src="echo.png" alt="Logo" class="logo1">
-  </div>
-  <script>
-    // Function to hide the intro section after a certain duration
-function hideIntroSection() {
-  const introSection = document.querySelector('.intro-section');
-  introSection.classList.add('hide');
-}
-
-// Hide the intro section after 5 seconds (5000 milliseconds)
-setTimeout(hideIntroSection, 5000);
-
-  </script>
-<body class="black-cyan-pink">
-    <div class="header">
-        <h1><img src="echo.png" alt="ECHO+" class="logo"></h1>
+<body>
+    <div class="container">
+        <img src="echo.png" alt="App Icon" class="app-icon">
+        <h1>Welcome to ECHO+</h1>
+        <p>Discover and share magical moments with our innovative platform 😍🥰. Embrace connections😺, unleash creativity👽, and let your voice echo 🤩 through the digital world. 🌟🌈✨<</p>
+        <a href="#" class="continue-button">Start Exploring</a>
     </div>
 
-    <div id="chat-container">
-        <div id="message-container"></div>
+    <div class="modal-container">
+        <div class="modal-content">
+            <h2 class="modal-title">Rules to Follow</h2>
+            <p class="modal-text">
+                Follow these guidelines to ensure a positive and respectful environment:
+            </p>
+            <ul class="modal-text">
+                <li><span class="emoji">🙌</span> Be kind and respectful to others.</li>
+                <li><span class="emoji">🚫</span> Avoid offensive language and hate speech.</li>
+                <li><span class="emoji">✨</span> Share only appropriate and relevant content.</li>
+                <li><span class="emoji">🔒</span> Respect the privacy of others.</li>
+                <li><span class="emoji">🌟</span> Engage in constructive and meaningful conversations.</li>
+            </ul>
+            <a href="https://arc690.github.io/ECHOi/" class="close-button">let's go!</a>
+        </div>
     </div>
 
-    <div id="message-input-container">
-        <input type="text" id="message-input" placeholder="let's dive into the chat...">
-        <label for="image-input" id="image-upload-label">
-            <input type="file" id="image-input" accept="image/*" style="display: none;">
-            <i class="fas fa-image"></i> Upload Image
-        </label>
-        <button id="send-button"><img src="send.png" alt="Send"></button>
-       
-        <style>
-            #send-button img {
-              width: 20px; /* Adjust the width to your desired size */
-              height: 20px; /* Adjust the height to your desired size */
-            }
-          </style>
-          
-    </div>
-    
-
- 
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getDatabase, ref, onChildAdded, push } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
-
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDAJjq3-G3mMHyfzPfnJRdWw4svKoj_aI8",
-            authDomain: "chat-app-echo.firebaseapp.com",
-            projectId: "chat-app-echo",
-            storageBucket: "chat-app-echo.appspot.com",
-            messagingSenderId: "24537551383",
-            appId: "1:24537551383:web:42e5912cdd77eaeadc0252"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-
-        // Get a reference to the database
-        const database = getDatabase();
-
-        // Reference to the chat messages in the database
-        const messagesRef = ref(database, 'messages');
-
-        // Get DOM elements
-        const messageContainer = document.getElementById('message-container');
-        const messageInput = document.getElementById('message-input');
-        const sendButton = document.getElementById('send-button');
-        const imageInput = document.getElementById('image-input');
-
-        // Function to display messages in the chat container
-        function displayMessage(message) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message');
-            messageElement.innerHTML = `
-                <p class="sender">${message.sender}</p>
-                ${message.text ? `<p>${message.text}</p>` : ''}
-                ${message.image ? `<img src="${message.image}" alt="Image">` : ''}
-                <p class="timestamp">${formatTimestamp(message.timestamp)}</p>
-                <div class="options">
-                    <button><img src="comment.png" alt="Comment"> Comment</button>
-                    <button><img src="retweet.png" alt="Retweet"> Retweet</button>
-                    
-                   
-                    
-                </div>
-            `;
-            messageContainer.appendChild(messageElement);
-            messageContainer.scrollTop = messageContainer.scrollHeight;
-        }
-
-        // Format timestamp to a readable format
-        function formatTimestamp(timestamp) {
-            const date = new Date(timestamp);
-            const hours = date.getHours();
-            const minutes = date.getMinutes();
-            return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
-        }
-
-        // Listen for new messages and display them in real-time
-        onChildAdded(messagesRef, (snapshot) => {
-            const message = snapshot.val();
-            displayMessage(message);
+    <script>
+        document.querySelector('.continue-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.modal-container').style.display = 'block';
         });
 
-        // Function to send a message
-        function sendMessage() {
-            const messageText = messageInput.value;
-            const messageImage = imageInput.files[0];
-
-            if (messageText || messageImage) {
-                const message = {
-                    text: messageText,
-                    sender: 'sender',
-                    timestamp: new Date().getTime()
-                };
-
-                if (messageImage) {
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        message.image = event.target.result;
-                        push(messagesRef, message);
-                    };
-                    reader.readAsDataURL(messageImage);
-                } else {
-                    push(messagesRef, message);
-                }
-
-                messageInput.value = '';
-                imageInput.value = '';
-            }
-        }
-
-        // Event listener for the send button click
-        sendButton.addEventListener('click', sendMessage);
-
-        // Event listener for the Enter key press in the message input field
-        messageInput.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        // Event listener for file input change
-        imageInput.addEventListener('change', () => {
-            const file = imageInput.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const imagePreview = document.createElement('img');
-                    imagePreview.src = event.target.result;
-                   imagePreview.alt = 'Image Preview';
-
-                    const messageContainer = document.getElementById('message-container');
-                    messageContainer.appendChild(imagePreview);
-                };
-                reader.readAsDataURL(file);
-            }
+        document.querySelector('.close-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = "https://arc690.github.io/ECHOi/";
         });
     </script>
 </body>
